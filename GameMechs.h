@@ -7,6 +7,9 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 
+#define DIMX 30
+#define DIMY 15
+
 using namespace std;
 
 
@@ -44,7 +47,7 @@ class GameMechs
         int getBoardSizeX();
         int getBoardSizeY();
 
-        void getScore();
+        int getScore();
         void incrementScore();
       
 

@@ -5,17 +5,19 @@
 
 objPosArrayList::objPosArrayList()
 {
-
+    sizeList = 0;
+    sizeArray = ARRAY_MAX_CAP;
+    aList = new objPos[sizeArray];
 }
 
 objPosArrayList::~objPosArrayList()
 {
-
+    delete[] aList;
 }
 
 int objPosArrayList::getSize()
 {
-
+    return sizeArray;
 }
 
 void objPosArrayList::insertHead(objPos thisPos)

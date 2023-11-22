@@ -1,4 +1,7 @@
 #include "GameMechs.h"
+#include "MacUILib.h"
+
+
 
 GameMechs::GameMechs()
 {
@@ -6,13 +9,13 @@ GameMechs::GameMechs()
     exitFlag = false;
     loseFlag = false;
     score = 0;
-    boardSizeX = 30;
-    boardSizeY = 15;
+    boardSizeX = 20;
+    boardSizeY = 10;
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
 {
-    input = "";
+    input = 0;
     exitFlag = false;
     loseFlag = false;
     score = 0;
@@ -22,6 +25,7 @@ GameMechs::GameMechs(int boardX, int boardY)
 
 // do you need a destructor?
 // did not use heap?
+// will use when we do food
 // GameMechs::~GameMechs()
 // {
 
@@ -42,8 +46,12 @@ char GameMechs::getInput()
 {
     if (MacUILib_hasChar())
     {
-        return MacUILib_getChar();
+
+        input = MacUILib_getChar();
+        // maybe dont need this line?
+        
     }
+    return input;
 }
 
 int GameMechs::getBoardSizeX()
@@ -73,7 +81,7 @@ void GameMechs::setLoseFlag()
 
 void GameMechs::setInput(char this_input)
 {
-    input = this_input
+    input = this_input;
 }
 
 void GameMechs::clearInput()
