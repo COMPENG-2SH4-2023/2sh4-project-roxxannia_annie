@@ -94,4 +94,32 @@ void GameMechs::incrementScore()
     score++;
 }
 
+// food generation functions
+void GameMechs::generateFood(objPos blockOff)
+{
 
+    int item_drawn = 1; // No item generated yet
+
+
+    do {
+        item_drawn = 0;
+        foodPos.x = (rand() % (boardSizeX - 2)) + 1; // range to edge of game board
+        foodPos.y = (rand() % (boardSizeY - 2)) + 1; // range to edge of game board
+
+        // check if the generated item's coordinates overlap with player
+        if (foodPos.x == blockOff.x && foodPos.y == blockOff.y) 
+        {
+            item_drawn = 1;
+        }
+
+    } while (item_drawn); // repeat if an item has been drawn at this position
+
+    foodPos.setObjPossetObjPos(foodPos.x, foodPos.y, 'O');
+
+}
+
+
+void GameMechs::getFoodPos(objPos &returnPos)
+{
+    returnPos = foodPos;
+}
