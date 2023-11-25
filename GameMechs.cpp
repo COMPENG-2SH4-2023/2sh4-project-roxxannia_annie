@@ -18,9 +18,6 @@ GameMechs::GameMechs()
 
     // seeding rand generator
     srand((unsigned int)time(NULL));
-    // initalize foodPos
-    foodPos = objPos();
-
 }
 
 GameMechs::GameMechs(int boardX, int boardY)

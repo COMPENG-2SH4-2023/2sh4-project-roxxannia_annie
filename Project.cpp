@@ -53,7 +53,10 @@ void Initialize(void)
 
     // exitFlag = false;
     //myGM makes exit flag fal default
-    
+    objPos playerPos;
+        myPlayer->getPlayerPos(playerPos); // get player position to avoid food spawning on the player
+
+        myGM->generateFood(playerPos);
 }
 
 void GetInput(void)
@@ -62,7 +65,7 @@ void GetInput(void)
     // ITERATION 2 STUFF -- REMOVE LATER?
     char userInput = myGM->getInput();
 
-    // O or o for new food geneeration
+    // // O or o for new food geneeration
     if (userInput == 'O' || userInput == 'o')
     {
         objPos playerPos;
