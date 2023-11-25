@@ -7,6 +7,7 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 
+
 #define DIMX 30
 #define DIMY 15
 

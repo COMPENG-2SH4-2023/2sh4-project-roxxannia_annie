@@ -1,6 +1,10 @@
 #include "GameMechs.h"
 #include "MacUILib.h"
 
+//import the required library for rand() and srand()
+#include <stdlib.h>
+// library for accessing the current time - for seeding random number generation
+#include <time.h>
 
 
 GameMechs::GameMechs()
@@ -11,6 +15,12 @@ GameMechs::GameMechs()
     score = 0;
     boardSizeX = 20;
     boardSizeY = 10;
+
+    // seeding rand generator
+    srand((unsigned int)time(NULL));
+    // initalize foodPos
+    foodPos = objPos();
+
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -97,29 +107,27 @@ void GameMechs::incrementScore()
 // food generation functions
 void GameMechs::generateFood(objPos blockOff)
 {
-
-    int item_drawn = 1; // No item generated yet
-
-
+    int item_drawn;
+    
     do {
         item_drawn = 0;
         foodPos.x = (rand() % (boardSizeX - 2)) + 1; // range to edge of game board
         foodPos.y = (rand() % (boardSizeY - 2)) + 1; // range to edge of game board
-
-        // check if the generated item's coordinates overlap with player
+        
         if (foodPos.x == blockOff.x && foodPos.y == blockOff.y) 
-        {
-            item_drawn = 1;
-        }
-
+            {
+                item_drawn = 1;
+            }
+    
     } while (item_drawn); // repeat if an item has been drawn at this position
 
-    foodPos.setObjPossetObjPos(foodPos.x, foodPos.y, 'O');
-
+    foodPos.setObjPos(foodPos.x, foodPos.y, 'O');
 }
 
 
 void GameMechs::getFoodPos(objPos &returnPos)
 {
-    returnPos = foodPos;
+    returnPos.setObjPos(foodPos.x, foodPos.y, 'O');
+
+
 }
