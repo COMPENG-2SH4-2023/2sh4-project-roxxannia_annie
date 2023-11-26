@@ -16,8 +16,6 @@ GameMechs::GameMechs()
     boardSizeX = 20;
     boardSizeY = 10;
 
-    // seeding rand generator
-    srand((unsigned int)time(NULL));
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -99,32 +97,4 @@ void GameMechs::clearInput()
 void GameMechs::incrementScore()
 {
     score++;
-}
-
-// food generation functions
-void GameMechs::generateFood(objPos blockOff)
-{
-    int item_drawn;
-    
-    do {
-        item_drawn = 0;
-        foodPos.x = (rand() % (boardSizeX - 2)) + 1; // range to edge of game board
-        foodPos.y = (rand() % (boardSizeY - 2)) + 1; // range to edge of game board
-        
-        if (foodPos.x == blockOff.x && foodPos.y == blockOff.y) 
-            {
-                item_drawn = 1;
-            }
-    
-    } while (item_drawn); // repeat if an item has been drawn at this position
-
-    foodPos.setObjPos(foodPos.x, foodPos.y, 'O');
-}
-
-
-void GameMechs::getFoodPos(objPos &returnPos)
-{
-    returnPos.setObjPos(foodPos.x, foodPos.y, 'O');
-
-
 }

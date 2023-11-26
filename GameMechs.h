@@ -23,9 +23,6 @@ class GameMechs
     // You will include more data members and member functions to complete your design.
 
     private:
-        // adding random food generation
-        objPos foodPos;
-        
         char input;
         bool exitFlag;
         bool loseFlag;
@@ -54,9 +51,7 @@ class GameMechs
         int getScore();
         void incrementScore();
       
-        // adding random food generation
-        void generateFood(objPos blockOff);
-        void getFoodPos(objPos &returnPos);
+
 };
 
 #endif

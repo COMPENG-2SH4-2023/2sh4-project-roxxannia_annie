@@ -3,6 +3,8 @@
 #include "objPos.h"
 #include "GameMechs.h"
 #include "Player.h"
+#include "Food.h"
+#include <time.h>
 
 using namespace std;
 
@@ -11,6 +13,7 @@ using namespace std;
 //Global scope
 GameMechs* myGM;
 Player* myPlayer;
+Food* myFood;
 
 objPos boardPos;
 
@@ -51,28 +54,17 @@ void Initialize(void)
     myGM = new GameMechs(DIMX, DIMY); //make board size
     myPlayer = new Player(myGM);
 
-    // exitFlag = false;
-    //myGM makes exit flag fal default
-    objPos playerPos;
-        myPlayer->getPlayerPos(playerPos); // get player position to avoid food spawning on the player
+    // food generation
+    myFood = new Food(myGM);
 
-        myGM->generateFood(playerPos);
+    objPos playPos;
+    objPos foodPos;
+    myPlayer->getPlayerPos(playPos);
+    myFood->generateFood(playPos);
 }
 
 void GetInput(void)
 {
-
-    // ITERATION 2 STUFF -- REMOVE LATER?
-    char userInput = myGM->getInput();
-
-    // // O or o for new food geneeration
-    if (userInput == 'O' || userInput == 'o')
-    {
-        objPos playerPos;
-        myPlayer->getPlayerPos(playerPos); // get player position to avoid food spawning on the player
-
-        myGM->generateFood(playerPos); // generate new food, overwriting the old one
-    }
     
     
 }
@@ -81,6 +73,11 @@ void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+    
+    myFood->updateFood();
+
+    // input not repeatedly processed
+    myGM->clearInput(); 
 }
 
 void DrawScreen(void)
@@ -90,14 +87,7 @@ void DrawScreen(void)
     myPlayer->getPlayerPos(tempPos);//get the player pos.
 
     objPos foodPos;
-    myGM->getFoodPos(foodPos);
-
-    // // generate food
-    // if (tempPos.x == foodPos.x && tempPos.y == foodPos.y)
-    // {
-    //     myGM->incrementScore();
-    //     myGM->generateFood(tempPos); // Generate new food when the player eats the current one
-    // }
+    myFood->getFoodPos(foodPos);
 
     // dimy is rows; dimx is columns
     for (int i = 0; i < myGM->getBoardSizeY(); i++) // rows
@@ -138,8 +128,8 @@ void DrawScreen(void)
     MacUILib_printf("Press spacebar to exit the game!\n");
 
     // debugging -- REMOVE
-    MacUILib_printf("Food Coordinates: (%d, %d)\n", foodPos.x, foodPos.y);
-    MacUILib_printf("Food Symbol: %c\n", foodPos.symbol);
+    // MacUILib_printf("Food Coordinates: (%d, %d)\n", foodPos.x, foodPos.y);
+    // MacUILib_printf("Food Symbol: %c\n", foodPos.symbol);
 
 }
 

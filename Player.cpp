@@ -75,28 +75,28 @@ void Player::movePlayer()
     {
         case UP:
             playerPos.y--;
-            if(playerPos.y <=0)
+            if(playerPos.y < 1)
             {
                 playerPos.y = mainGameMechsRef->getBoardSizeY()-2;
             }
             break;
         case DOWN:
             playerPos.y++;
-            if(playerPos.y >= mainGameMechsRef->getBoardSizeY())
+            if(playerPos.y > mainGameMechsRef->getBoardSizeY())
             {
                 playerPos.y = 1;
             }
             break;
         case LEFT:
             playerPos.x--;
-            if(playerPos.x <= 0)
+            if(playerPos.x < 1)
             {
                 playerPos.x = mainGameMechsRef->getBoardSizeX()-2;
             }
             break;
         case RIGHT:
             playerPos.x++;
-            if(playerPos.x >= mainGameMechsRef->getBoardSizeX())
+            if(playerPos.x > mainGameMechsRef->getBoardSizeX())
             {
                 playerPos.x = 1;
             }            
