@@ -1,24 +1,82 @@
 #include "Player.h"
+#include <iostream>
+// #include "Food.h"
+// #include "MacUILib.h"
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* thisFoodRef)
 {
     mainGameMechsRef = thisGMRef;
+    mainGameFood = thisFoodRef;
     myDir = STOP;
 
     // more actions to be included
-    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2, mainGameMechsRef->getBoardSizeY()/2, '@');
+//    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2, mainGameMechsRef->getBoardSizeY()/2, '@');
+    playerPosList = new objPosArrayList();
+    objPos newPos{mainGameMechsRef->getBoardSizeX()/2, mainGameMechsRef->getBoardSizeY()/2, '*'};
+    playerPosList->insertHead(newPos);
+
 }
 
 
 Player::~Player()
 {
     // delete any heap members here
+    delete playerPosList;
 }
 
-void Player::getPlayerPos(objPos &returnPos)
+
+
+bool Player::checkFoodConsumption(objPos headPos, objPos foodPos)
 {
-    returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    // cout << "HeadPos: (" << headPos.x << ", " << headPos.y << "), FoodPos: (" << foodPos.x << ", " << foodPos.y << ")" << endl;
+
+    if (headPos.x == foodPos.x && headPos.y == foodPos.y)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+
+}
+
+void Player::increasePlayerLength()
+{
+    objPos increPos;
+    playerPosList->getHeadElement(increPos);
+    playerPosList->insertHead(increPos);
+}
+
+
+bool Player::checkSelfCollision()
+{
+    // return false;
+    objPos headPos;
+    objPos colliPos;
+
+    playerPosList->getHeadElement(headPos);
+
+    for (int i = 1; i<playerPosList->getSize(); i++)
+    {
+        playerPosList->getElement(colliPos,i);
+        if(headPos.x == colliPos.x && headPos.y == colliPos.y)
+        {
+            return true;
+            
+        }
+    }
+    return false;
+
+}
+
+objPosArrayList* Player::getPlayerPos()
+{
+    // returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    return playerPosList;
+    // playerPosList->getHeadElement(playerPosList);
     // return the reference to the playerPos arrray list
 }
 
@@ -68,41 +126,90 @@ void Player::updatePlayerDir()
     }   
 }
 
-void Player::movePlayer()
+void Player::movePlayer(objPos foodPos)
 {
     // PPA3 Finite State Machine logic
+    //need to get x and y
+    objPos currPos;
+    playerPosList->getHeadElement(currPos);
+
+    // tempPos.getObjPos(tempPos);
+    int newY = currPos.y;
+    int newX = currPos.x;
     switch ((myDir))
     {
         case UP:
-            playerPos.y--;
-            if(playerPos.y < 1)
+            
+            if(newY <= 1)
             {
-                playerPos.y = mainGameMechsRef->getBoardSizeY()-2;
+                newY = mainGameMechsRef->getBoardSizeY()-1;
             }
+            newY--;
             break;
         case DOWN:
-            playerPos.y++;
-            if(playerPos.y > mainGameMechsRef->getBoardSizeY())
+            
+            if(newY >= mainGameMechsRef->getBoardSizeY()-2)
             {
-                playerPos.y = 1;
+                newY = 0;
             }
+            newY++;
             break;
         case LEFT:
-            playerPos.x--;
-            if(playerPos.x < 1)
+            
+            if(newX <= 1)
             {
-                playerPos.x = mainGameMechsRef->getBoardSizeX()-2;
+                newX = mainGameMechsRef->getBoardSizeX()-1;
             }
+            newX--;
             break;
         case RIGHT:
-            playerPos.x++;
-            if(playerPos.x > mainGameMechsRef->getBoardSizeX())
+            
+            if(newX >= mainGameMechsRef->getBoardSizeX()-2)
             {
-                playerPos.x = 1;
-            }            
+                newX = 0;
+            } 
+            newX++;
+            break;           
         case STOP:
         default:
             break;
     }
+
+    // objPos currPos{newX, newY, '*'};
+    objPos newPos{newX,newY,'*'};
+    
+    objPos tempPos;
+
+    if (checkSelfCollision())
+    {
+        mainGameMechsRef->getLoseFlagStatus();
+        mainGameMechsRef->setExitTrue();
+    }
+
+
+    if (checkFoodConsumption(newPos,foodPos))
+    {
+        mainGameMechsRef->incrementScore();
+        increasePlayerLength();
+        objPos bodyPos;
+        // for (int k = 0; k<playerPosList->getSize(); k++)
+        // {
+            playerPosList->getElement(bodyPos,0);
+            mainGameFood->generateFood(bodyPos);
+        // }
+       
+    }
+    else{
+        playerPosList->insertHead(newPos);
+        playerPosList->removeTail();
+    }
+
+    // if(!checkFoodConsumption(currPos))
+    // {
+    //     objPos newPos{newX,newY,'*'};
+    //     playerPosList->insertHead(newPos);
+    //     playerPosList->removeTail();
+    // }
+    
 }
 

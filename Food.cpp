@@ -32,16 +32,17 @@ void Food::generateFood(objPos blockOff)
         int y = mainGameMechsRef->getBoardSizeY();
 
 
-        xPos = (rand() %  (x- 2)) + 1;
+        xPos = (rand() %  (x - 2)) + 1;
         yPos = (rand() %  (y - 2)) + 1;
 
     // validate
 
         if(xPos != blockOff.x && yPos != blockOff.y)
         {
-            foodPos.x = xPos;
-            foodPos.y = yPos;
-            foodPos.symbol = 'o';
+            // foodPos.x = xPos;
+            // foodPos.y = yPos;
+            // foodPos.symbol = 'o';
+            foodPos.setObjPos(xPos,yPos,'o');
             break;
         }
     }
@@ -69,5 +70,7 @@ void Food::updateFood()
             generateFood(foodPos);
             break;
     }
+
+
 }
     
