@@ -54,7 +54,7 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     myGM = new GameMechs(DIMX, DIMY); //make board size
-    myPlayer = new Player(myGM, myFood);
+    myPlayer = new Player(myGM);
 
     // food generation
     myFood = new Food(myGM);
@@ -78,26 +78,11 @@ void RunLogic(void)
     myFood->getFoodPos(tempFood);
 
     myPlayer->updatePlayerDir();
-    myPlayer->movePlayer(tempFood);
+    myPlayer->movePlayer(myFood);
     
 
 
-
-    // objPosArrayList* myPlayerList = myPlayer->getPlayerPos();
-    // objPos bodyPos;
-
-    
-    // if()
-    // for (int k = 0; k<myPlayerList->getSize(); k++)
-    // {
-    //     myPlayerList->getElement(bodyPos,k);
-    //     if (bodyPos.y == tempFood.y && bodyPos.x == tempFood.x)
-    //     {
-    //         myFood->generateFood(bodyPos);
-    //     }
-    // }
-
-    myFood->updateFood();
+    // myFood->updateFood();
 
     // input not repeatedly processed
     myGM->clearInput(); 
@@ -128,21 +113,24 @@ void DrawScreen(void)
         {
             // print player
             //print player in a loop 
-            if(headPos.y ==i && headPos.x == j)
+            bool snakePrint = true;
+            for (int k = 0; k<myPlayerList->getSize(); k++)
             {
-                for (int k = 0; k<myPlayerList->getSize(); k++)
+                myPlayerList->getElement(bodyPos,k);
+                if (bodyPos.y == i && bodyPos.x == j)
                 {
-                    myPlayerList->getElement(bodyPos,k);
-                    if (bodyPos.y == i && bodyPos.x == j)
-                    {
-                        MacUILib_printf("%c", bodyPos.symbol);
-                    }
+                    MacUILib_printf("%c", bodyPos.symbol);
+                    snakePrint = false; // havent finished printing
+                    break;
                 }
             }
 
+            if(!snakePrint)
+                continue;
+            
 
             // print food
-            else if (i == foodPos.y && j == foodPos.x)
+            if (i == foodPos.y && j == foodPos.x)
             {
                 // gameBoard[i][j] = 'O';
                 MacUILib_printf("%c", foodPos.symbol);
@@ -165,7 +153,7 @@ void DrawScreen(void)
     }
 
     MacUILib_printf("Player Score: %d\n", myGM->getScore());
-    // MacUILib_printf("Player Direction\n", moveCnt);
+    MacUILib_printf("Snake Length %d\n", myPlayerList->getSize());
     MacUILib_printf("Press spacebar to exit the game!\n");
 
     // debugging -- REMOVE
@@ -182,14 +170,15 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    MacUILib_clearScreen(); 
+    
 
-    if(myGM->getExitFlagStatus() == true && myGM->getLoseFlagStatus() == true)
+    if(myGM->getLoseFlagStatus() == true)
     {
+        MacUILib_clearScreen(); 
         MacUILib_printf("You have consumed yourself :(, it's a suicide");
         MacUILib_uninit();
     }
-    else
+    else if (myGM->getLoseFlagStatus() == false)
     {
         MacUILib_printf("Your final score is %d", myGM->getScore());
         MacUILib_uninit();

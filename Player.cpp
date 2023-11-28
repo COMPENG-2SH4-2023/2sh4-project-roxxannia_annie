@@ -4,10 +4,10 @@
 // #include "MacUILib.h"
 
 
-Player::Player(GameMechs* thisGMRef, Food* thisFoodRef)
+Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
-    mainGameFood = thisFoodRef;
+    // mainGameFood = thisFoodRef;
     myDir = STOP;
 
     // more actions to be included
@@ -33,6 +33,7 @@ bool Player::checkFoodConsumption(objPos headPos, objPos foodPos)
 
     if (headPos.x == foodPos.x && headPos.y == foodPos.y)
     {
+        cout << true << endl;
         return true;
     }
     else
@@ -126,12 +127,15 @@ void Player::updatePlayerDir()
     }   
 }
 
-void Player::movePlayer(objPos foodPos)
+void Player::movePlayer(Food* foodRef)
 {
     // PPA3 Finite State Machine logic
     //need to get x and y
     objPos currPos;
     playerPosList->getHeadElement(currPos);
+
+    objPos foodPos;
+    foodRef->getFoodPos(foodPos);
 
     // tempPos.getObjPos(tempPos);
     int newY = currPos.y;
@@ -182,34 +186,24 @@ void Player::movePlayer(objPos foodPos)
 
     if (checkSelfCollision())
     {
-        mainGameMechsRef->getLoseFlagStatus();
+        mainGameMechsRef->setLoseFlag();
         mainGameMechsRef->setExitTrue();
     }
 
 
     if (checkFoodConsumption(newPos,foodPos))
     {
+        // playerPosList->insertHead(newPos);
+        playerPosList->insertHead(newPos);
+        // increasePlayerLength();
         mainGameMechsRef->incrementScore();
-        increasePlayerLength();
-        objPos bodyPos;
-        // for (int k = 0; k<playerPosList->getSize(); k++)
-        // {
-            playerPosList->getElement(bodyPos,0);
-            mainGameFood->generateFood(bodyPos);
-        // }
-       
+        
+        foodRef->generateFood(newPos);
     }
     else{
         playerPosList->insertHead(newPos);
         playerPosList->removeTail();
     }
-
-    // if(!checkFoodConsumption(currPos))
-    // {
-    //     objPos newPos{newX,newY,'*'};
-    //     playerPosList->insertHead(newPos);
-    //     playerPosList->removeTail();
-    // }
     
 }
 
