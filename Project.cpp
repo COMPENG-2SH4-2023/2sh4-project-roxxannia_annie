@@ -67,12 +67,12 @@ void Initialize(void)
 
 
     // bonus - generate five food items
-    for (int i = 0; i < 5; i++)
-    {
-        objPos playPos;
-        myPlayer->getPlayerPos();
-        myFood->generateFood(playPos);
-    }
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     objPos playPos;
+    //     myPlayer->getPlayerPos();
+    //     myFood->generateFood(playPos);
+    // }
 
 }
 
@@ -106,13 +106,15 @@ void DrawScreen(void)
     //get the player pos. --> not used anymore after iteration 3
     // playerPosition = myPlayer->getPlayerPos();
 
-    objPos foodPos;
-    myFood->getFoodPos(foodPos);
+    // objPos foodPos;
+    // myFood->getFoodPos(foodPos);
 
     objPosArrayList* myPlayerList = myPlayer->getPlayerPos();
+    objPosArrayList* foodBucket = myFood->getFoodBucket();
 
     objPos headPos;
     myPlayerList->getHeadElement(headPos);
+
 
     objPos bodyPos;
 
@@ -146,7 +148,7 @@ void DrawScreen(void)
             //     MacUILib_printf("%c", foodPos.symbol);
             // }
             bool foodPrint = true;
-            objPosArrayList* foodBucket = myFood->getFoodBucket();
+            
             for (int k = 0; k < foodBucket->getSize(); k++)
             {
                 foodBucket->getElement(bodyPos, k);
@@ -186,6 +188,7 @@ void DrawScreen(void)
     // debugging -- REMOVE
     // MacUILib_printf("Food Coordinates: (%d, %d)\n", foodPos.x, foodPos.y);
     // MacUILib_printf("Food Symbol: %c\n", foodPos.symbol);
+    // MacUILib_printf("collision: %d\n", myPlayer->checkFoodConsumption(headPos, foodBucket ));
 
 }
 

@@ -27,7 +27,7 @@ Player::~Player()
 
 
 
-bool Player::checkFoodConsumption(objPos headPos, objPosArrayList* foodBucket)
+int Player::checkFoodConsumption(objPos headPos, objPosArrayList* foodBucket)
 {
     // cout << "HeadPos: (" << headPos.x << ", " << headPos.y << "), FoodPos: (" << foodPos.x << ", " << foodPos.y << ")" << endl;
 
@@ -43,29 +43,33 @@ bool Player::checkFoodConsumption(objPos headPos, objPosArrayList* foodBucket)
 
     objPos foodPos;
 
+    int score = 0;
+
     // bonus 
     for (int i = 0; i < foodBucket->getSize(); i++)
     {
         foodBucket->getElement(foodPos, i);
 
-        if (headPos.x == foodPos.x && headPos.y == foodPos.y)
+        if (headPos.x == foodPos.x && headPos.y == foodPos.y && foodPos.symbol == '$')
         {
-            if (foodPos.symbol == '$')
-            {
-                return 5; // special food score +5
-                // increasePlayerLength(5); // increase snake length by 10
-            }
-            else
-            {
-                return 1;; // Increment score for regular food
-                // increasePlayerLength(1);
-            }
-
-            foodPos.setObjPos(-1, -1, ' '); // Remove consumed food
-            return true;
+           score = 5;
+        //    foodPos.setObjPos(-1, -1, ' '); 
+           break;
+            
+            // Remove consumed food
+            // return 1;
         }
-        return 0; // no food consumed
+        else if (headPos.x == foodPos.x && headPos.y == foodPos.y && foodPos.symbol == 'o')
+        {
+           score = 1;
+        //    foodPos.setObjPos(-1, -1, ' '); 
+           break;
+            // Remove consumed food
+            // return 1;
+        }
+        
     }
+    return score; // no food consumed
 
 }
 
@@ -157,6 +161,7 @@ void Player::updatePlayerDir()
             myDir = STOP;
             mainGameMechsRef->setExitTrue();
             break;
+
         default:
             break;
     }   
@@ -256,7 +261,8 @@ void Player::movePlayer(Food* foodRef)
 
     // additional features
     objPosArrayList* foodBucket = foodRef->getFoodBucket();
-    int foodType = checkFoodConsumption(currPos, foodBucket); // either special or norm
+    // int foodType = checkFoodConsumption(currPos, foodBucket); 
+    // either special or norm
 
     // tempPos.getObjPos(tempPos);
     int newY = currPos.y;
@@ -264,7 +270,6 @@ void Player::movePlayer(Food* foodRef)
     switch ((myDir))
     {
         case UP:
-            
             if(newY <= 1)
             {
                 newY = mainGameMechsRef->getBoardSizeY()-1;
@@ -272,7 +277,6 @@ void Player::movePlayer(Food* foodRef)
             newY--;
             break;
         case DOWN:
-            
             if(newY >= mainGameMechsRef->getBoardSizeY()-2)
             {
                 newY = 0;
@@ -280,7 +284,6 @@ void Player::movePlayer(Food* foodRef)
             newY++;
             break;
         case LEFT:
-            
             if(newX <= 1)
             {
                 newX = mainGameMechsRef->getBoardSizeX()-1;
@@ -288,7 +291,6 @@ void Player::movePlayer(Food* foodRef)
             newX--;
             break;
         case RIGHT:
-            
             if(newX >= mainGameMechsRef->getBoardSizeX()-2)
             {
                 newX = 0;
@@ -311,12 +313,21 @@ void Player::movePlayer(Food* foodRef)
         mainGameMechsRef->setExitTrue();
     }
 
-
-    if (foodType > 0)
+    // cout << checkFoodConsumption(newPos,foodBucket) <<endl;
+    // if (foodType > 0)
+    if (checkFoodConsumption(newPos,foodBucket) == 1)
     {
         playerPosList->insertHead(newPos);
-        increasePlayerLength();
-        mainGameMechsRef->incrementScore(foodType);
+        // increasePlayerLength();
+        mainGameMechsRef->incrementScore(1);
+        foodRef->generateFood(newPos);
+    }
+    else if (checkFoodConsumption(newPos,foodBucket) == 5)
+    {
+        playerPosList->insertHead(newPos);
+        playerPosList->removeTail();
+        // increasePlayerLength();
+        mainGameMechsRef->incrementScore(5);
         foodRef->generateFood(newPos);
     }
     else

@@ -91,12 +91,16 @@ void Food::generateFood(objPos blockOff)
         char symbol = (numSpecialFood < 2) ? '$' : 'o';
 
         // Set the food position
-        foodPos.setObjPos(xPos, yPos, symbol);
+        // foodPos.setObjPos(xPos, yPos, symbol);
 
         // Create a new food item and insert it into the bucket
-        objPos foodItem;
-        foodItem.setObjPos(xPos, yPos, symbol);
-        foodBucket->insertTail(foodItem);
+        // objPos foodItem;
+        // foodItem.setObjPos(xPos, yPos, symbol);
+        // foodBucket->insertTail(foodItem);
+        objPos foodItem{xPos, yPos, '$'};
+        // foodItem.setObjPos(xPos, yPos, symbol);
+        foodBucket->insertHead(foodItem);
+        
 
         // Increment the count of special food items
         numSpecialFood++;
@@ -117,12 +121,22 @@ void Food::generateFood(objPos blockOff)
         }
 
         // Set the food position
-        foodPos.setObjPos(xPos, yPos, 'o');
+        // foodPos.setObjPos(xPos, yPos, 'o');
 
         // Create a new food item and insert it into the bucket
-        objPos foodItem;
-        foodItem.setObjPos(xPos, yPos, 'o');
-        foodBucket->insertTail(foodItem);
+        // objPos foodItem;
+        // foodItem.setObjPos(xPos, yPos, 'o');
+        // foodBucket->insertTail(foodItem);
+        objPos foodItem{xPos, yPos, 'o'};
+        // foodItem.setObjPos(xPos, yPos, symbol);
+        foodBucket->insertHead(foodItem);
+        // foodBucket->removeHead();
+    }
+
+    if (foodBucket->getSize()>5)
+    {
+        for (int i = 0; i < 5; i++)
+            foodBucket->removeTail();
     }
 }
     
