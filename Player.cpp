@@ -41,51 +41,51 @@ bool Player::checkFoodConsumption(objPos headPos, objPosArrayList* foodBucket)
     //     return false;
     // }
 
+    objPos foodPos;
 
     // bonus 
     for (int i = 0; i < foodBucket->getSize(); i++)
     {
-        objPos foodPos;
         foodBucket->getElement(foodPos, i);
 
         if (headPos.x == foodPos.x && headPos.y == foodPos.y)
         {
             if (foodPos.symbol == '$')
             {
-                mainGameMechsRef->incrementScore(5); // special food score +5
-                increasePlayerLength(5); // increase snake length by 10
+                return 5; // special food score +5
+                // increasePlayerLength(5); // increase snake length by 10
             }
             else
             {
-                mainGameMechsRef->incrementScore(); // Increment score for regular food
-                increasePlayerLength(1);
+                return 1;; // Increment score for regular food
+                // increasePlayerLength(1);
             }
 
             foodPos.setObjPos(-1, -1, ' '); // Remove consumed food
             return true;
         }
+        return 0; // no food consumed
     }
 
-    return false;
 }
 
-// void Player::increasePlayerLength()
-// {
-//     objPos increPos;
-//     playerPosList->getHeadElement(increPos);
-//     playerPosList->insertHead(increPos);
-// }
+void Player::increasePlayerLength()
+{
+    objPos increPos;
+    playerPosList->getHeadElement(increPos);
+    playerPosList->insertHead(increPos);
+}
 
 // bonus
-void Player::increasePlayerLength(int length)
-{
-    for (int i = 0; i < length; i++)
-    {
-        objPos increPos;
-        playerPosList->getHeadElement(increPos);
-        playerPosList->insertHead(increPos);
-    }
-}
+// void Player::increasePlayerLength(int length)
+// {
+//     for (int i = 0; i < length; i++)
+//     {
+//         objPos increPos;
+//         playerPosList->getHeadElement(increPos);
+//         playerPosList->insertHead(increPos);
+//     }
+// }
 
 bool Player::checkSelfCollision()
 {
@@ -256,6 +256,7 @@ void Player::movePlayer(Food* foodRef)
 
     // additional features
     objPosArrayList* foodBucket = foodRef->getFoodBucket();
+    int foodType = checkFoodConsumption(currPos, foodBucket); // either special or norm
 
     // tempPos.getObjPos(tempPos);
     int newY = currPos.y;
@@ -302,7 +303,7 @@ void Player::movePlayer(Food* foodRef)
     // objPos currPos{newX, newY, '*'};
     objPos newPos{newX,newY,'*'};
     
-    objPos tempPos;
+    // objPos tempPos;
 
     if (checkSelfCollision())
     {
@@ -311,16 +312,15 @@ void Player::movePlayer(Food* foodRef)
     }
 
 
-    if (checkFoodConsumption(newPos,foodBucket))
+    if (foodType > 0)
     {
-        // playerPosList->insertHead(newPos);
         playerPosList->insertHead(newPos);
         increasePlayerLength();
-        mainGameMechsRef->incrementScore();
-        
+        mainGameMechsRef->incrementScore(foodType);
         foodRef->generateFood(newPos);
     }
-    else{
+    else
+    {
         playerPosList->insertHead(newPos);
         playerPosList->removeTail();
     }
