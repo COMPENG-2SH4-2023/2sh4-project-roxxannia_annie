@@ -49,7 +49,10 @@ class GameMechs
         int getBoardSizeY();
 
         int getScore();
-        void incrementScore();
+        // void incrementScore();
+        // bonus 
+        void incrementScore(int points = 1); // default point for food
+
       
 
 };

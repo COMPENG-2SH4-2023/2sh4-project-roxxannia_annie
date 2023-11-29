@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <iostream>
-// #include "Food.h"
-// #include "MacUILib.h"
+#include "Food.h"
+#include "MacUILib.h"
 
 
 Player::Player(GameMechs* thisGMRef)
@@ -27,30 +27,65 @@ Player::~Player()
 
 
 
-bool Player::checkFoodConsumption(objPos headPos, objPos foodPos)
+bool Player::checkFoodConsumption(objPos headPos, objPosArrayList* foodBucket)
 {
     // cout << "HeadPos: (" << headPos.x << ", " << headPos.y << "), FoodPos: (" << foodPos.x << ", " << foodPos.y << ")" << endl;
 
-    if (headPos.x == foodPos.x && headPos.y == foodPos.y)
-    {
-        cout << true << endl;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    // if (headPos.x == foodPos.x && headPos.y == foodPos.y)
+    // {
+    //     // cout << true << endl;
+    //     return true;
+    // }
+    // else
+    // {
+    //     return false;
+    // }
 
 
+    // bonus 
+    for (int i = 0; i < foodBucket->getSize(); i++)
+    {
+        objPos foodPos;
+        foodBucket->getElement(foodPos, i);
+
+        if (headPos.x == foodPos.x && headPos.y == foodPos.y)
+        {
+            if (foodPos.symbol == '$')
+            {
+                mainGameMechsRef->incrementScore(5); // special food score +5
+                increasePlayerLength(5); // increase snake length by 10
+            }
+            else
+            {
+                mainGameMechsRef->incrementScore(); // Increment score for regular food
+                increasePlayerLength(1);
+            }
+
+            foodPos.setObjPos(-1, -1, ' '); // Remove consumed food
+            return true;
+        }
+    }
+
+    return false;
 }
 
-void Player::increasePlayerLength()
+// void Player::increasePlayerLength()
+// {
+//     objPos increPos;
+//     playerPosList->getHeadElement(increPos);
+//     playerPosList->insertHead(increPos);
+// }
+
+// bonus
+void Player::increasePlayerLength(int length)
 {
-    objPos increPos;
-    playerPosList->getHeadElement(increPos);
-    playerPosList->insertHead(increPos);
+    for (int i = 0; i < length; i++)
+    {
+        objPos increPos;
+        playerPosList->getHeadElement(increPos);
+        playerPosList->insertHead(increPos);
+    }
 }
-
 
 bool Player::checkSelfCollision()
 {
@@ -127,6 +162,87 @@ void Player::updatePlayerDir()
     }   
 }
 
+// void Player::movePlayer(Food* foodRef)
+// {
+//     // PPA3 Finite State Machine logic
+//     //need to get x and y
+//     objPos currPos;
+//     playerPosList->getHeadElement(currPos);
+
+//     objPos foodPos;
+//     foodRef->getFoodPos(foodPos);
+
+//     // tempPos.getObjPos(tempPos);
+//     int newY = currPos.y;
+//     int newX = currPos.x;
+//     switch ((myDir))
+//     {
+//         case UP:
+            
+//             if(newY <= 1)
+//             {
+//                 newY = mainGameMechsRef->getBoardSizeY()-1;
+//             }
+//             newY--;
+//             break;
+//         case DOWN:
+            
+//             if(newY >= mainGameMechsRef->getBoardSizeY()-2)
+//             {
+//                 newY = 0;
+//             }
+//             newY++;
+//             break;
+//         case LEFT:
+            
+//             if(newX <= 1)
+//             {
+//                 newX = mainGameMechsRef->getBoardSizeX()-1;
+//             }
+//             newX--;
+//             break;
+//         case RIGHT:
+            
+//             if(newX >= mainGameMechsRef->getBoardSizeX()-2)
+//             {
+//                 newX = 0;
+//             } 
+//             newX++;
+//             break;           
+//         case STOP:
+//         default:
+//             break;
+//     }
+
+//     // objPos currPos{newX, newY, '*'};
+//     objPos newPos{newX,newY,'*'};
+    
+//     objPos tempPos;
+
+//     if (checkSelfCollision())
+//     {
+//         mainGameMechsRef->setLoseFlag();
+//         mainGameMechsRef->setExitTrue();
+//     }
+
+
+//     if (checkFoodConsumption(newPos,foodPos))
+//     {
+//         // playerPosList->insertHead(newPos);
+//         playerPosList->insertHead(newPos);
+//         // increasePlayerLength();
+//         mainGameMechsRef->incrementScore();
+        
+//         foodRef->generateFood(newPos);
+//     }
+//     else{
+//         playerPosList->insertHead(newPos);
+//         playerPosList->removeTail();
+//     }
+    
+// }
+
+// annie for bonus
 void Player::movePlayer(Food* foodRef)
 {
     // PPA3 Finite State Machine logic
@@ -134,8 +250,12 @@ void Player::movePlayer(Food* foodRef)
     objPos currPos;
     playerPosList->getHeadElement(currPos);
 
-    objPos foodPos;
-    foodRef->getFoodPos(foodPos);
+    // objPos foodPos;
+    // foodRef->getFoodPos(foodPos);
+
+
+    // additional features
+    objPosArrayList* foodBucket = foodRef->getFoodBucket();
 
     // tempPos.getObjPos(tempPos);
     int newY = currPos.y;
@@ -191,11 +311,11 @@ void Player::movePlayer(Food* foodRef)
     }
 
 
-    if (checkFoodConsumption(newPos,foodPos))
+    if (checkFoodConsumption(newPos,foodBucket))
     {
         // playerPosList->insertHead(newPos);
         playerPosList->insertHead(newPos);
-        // increasePlayerLength();
+        increasePlayerLength();
         mainGameMechsRef->incrementScore();
         
         foodRef->generateFood(newPos);
@@ -206,4 +326,3 @@ void Player::movePlayer(Food* foodRef)
     }
     
 }
-

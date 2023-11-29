@@ -27,9 +27,13 @@ class Player
         // void movePlayer(objPos foodPos);
         void movePlayer(Food* foodRef);
         
-        bool checkFoodConsumption(objPos headPos, objPos foodPos);
-        void increasePlayerLength();
+        bool checkFoodConsumption(objPos headPos, objPosArrayList* foodBucket);
+        // void increasePlayerLength();
         bool checkSelfCollision();
+
+        // bonus 
+        void increasePlayerLength(int length = 1);
+
 
     private:
         // Upgrade this in iteration 3. 

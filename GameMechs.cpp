@@ -94,7 +94,13 @@ void GameMechs::clearInput()
     input = 0;
 }
 
-void GameMechs::incrementScore()
+// void GameMechs::incrementScore()
+// {
+//     score++;
+// }
+
+// bonus
+void GameMechs::incrementScore(int points)
 {
-    score++;
+    score += points;
 }

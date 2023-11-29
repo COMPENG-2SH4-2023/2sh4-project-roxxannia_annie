@@ -64,6 +64,16 @@ void Initialize(void)
     // myPlayer->getPlayerPos(playPos);
     myPlayer->getPlayerPos();
     myFood->generateFood(playPos);
+
+
+    // bonus - generate five food items
+    for (int i = 0; i < 5; i++)
+    {
+        objPos playPos;
+        myPlayer->getPlayerPos();
+        myFood->generateFood(playPos);
+    }
+
 }
 
 void GetInput(void)
@@ -130,12 +140,29 @@ void DrawScreen(void)
             
 
             // print food
-            if (i == foodPos.y && j == foodPos.x)
+            // if (i == foodPos.y && j == foodPos.x)
+            // {
+            //     // gameBoard[i][j] = 'O';
+            //     MacUILib_printf("%c", foodPos.symbol);
+            // }
+            bool foodPrint = true;
+            objPosArrayList* foodBucket = myFood->getFoodBucket();
+            for (int k = 0; k < foodBucket->getSize(); k++)
             {
-                // gameBoard[i][j] = 'O';
-                MacUILib_printf("%c", foodPos.symbol);
+                foodBucket->getElement(bodyPos, k);
+                if (bodyPos.y == i && bodyPos.x == j)
+                {
+                    MacUILib_printf("%c", bodyPos.symbol);
+                    foodPrint = false;
+                    break;
+                }
             }
-            else if (i == 0 || i == myGM->getBoardSizeY() - 1 ||j == 0 || j == myGM->getBoardSizeX() - 1)
+
+            if (!foodPrint)
+                continue;
+
+            
+            if (i == 0 || i == myGM->getBoardSizeY() - 1 ||j == 0 || j == myGM->getBoardSizeX() - 1)
             {
                 // boardPos.setObjPos(j,i,'#');
                 MacUILib_printf("%c", '#');
@@ -175,7 +202,7 @@ void CleanUp(void)
     if(myGM->getLoseFlagStatus() == true)
     {
         MacUILib_clearScreen(); 
-        MacUILib_printf("You have consumed yourself :(, it's a suicide");
+        MacUILib_printf("You have consumed yourself :( it's a suicide");
         MacUILib_uninit();
     }
     else if (myGM->getLoseFlagStatus() == false)

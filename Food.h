@@ -19,13 +19,22 @@ class Food
 
         int **myFood; //heap data members
 
+
+        // bonus 
+        objPosArrayList* foodBucket;
+
+
     public:
         Food(GameMechs* thisGMRef);
         ~Food();
 
         void generateFood(objPos blockOff);
         void getFoodPos(objPos &returnPos);
-        void updateFood();
+        // void updateFood();
+
+        // bonus
+        objPosArrayList *getFoodBucket();
+      
 
 
 
