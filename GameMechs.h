@@ -7,7 +7,6 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 
-
 #define DIMX 30
 #define DIMY 15
 
@@ -16,12 +15,6 @@ using namespace std;
 
 class GameMechs
 {
-    // Construct the remaining declaration from the project manual.
-
-    // Only some sample members are included here
-
-    // You will include more data members and member functions to complete your design.
-
     private:
         char input;
         bool exitFlag;
@@ -49,9 +42,8 @@ class GameMechs
         int getBoardSizeY();
 
         int getScore();
-        // void incrementScore();
         // bonus 
-        void incrementScore(int points = 1); // default point for food
+        void incrementScore(int points);
 
       
 

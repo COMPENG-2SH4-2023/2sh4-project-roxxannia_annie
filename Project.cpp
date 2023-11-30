@@ -17,10 +17,6 @@ Player* myPlayer;
 Food* myFood;
 objPosArrayList* playerPosition;
 
-// objPos boardPos;
-
-// bool exitFlag;
-
 void Initialize(void);
 void GetInput(void);
 void RunLogic(void);
@@ -32,7 +28,6 @@ void CleanUp(void);
 
 int main(void)
 {
-
     Initialize();
 
     while(myGM->getExitFlagStatus() == false)  
@@ -53,7 +48,8 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    myGM = new GameMechs(DIMX, DIMY); //make board size
+    // making board size
+    myGM = new GameMechs(DIMX, DIMY); 
     myPlayer = new Player(myGM);
 
     // food generation
@@ -61,40 +57,27 @@ void Initialize(void)
 
     objPos playPos;
     objPos foodPos;
-    // myPlayer->getPlayerPos(playPos);
     myPlayer->getPlayerPos();
     myFood->generateFood(playPos);
-
-
-    // bonus - generate five food items
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     objPos playPos;
-    //     myPlayer->getPlayerPos();
-    //     myFood->generateFood(playPos);
-    // }
 
 }
 
 void GetInput(void)
 {
     
-    
 }
 
 void RunLogic(void)
 {   
+    // temp variable to store food position
     objPos tempFood;
     myFood->getFoodPos(tempFood);
 
+    // update players dir and move player
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer(myFood);
     
-
-
-    // myFood->updateFood();
-
-    // input not repeatedly processed
+    // clear input to avoid repeated processing
     myGM->clearInput(); 
 
 }
@@ -103,12 +86,6 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();   
     
-    //get the player pos. --> not used anymore after iteration 3
-    // playerPosition = myPlayer->getPlayerPos();
-
-    // objPos foodPos;
-    // myFood->getFoodPos(foodPos);
-
     objPosArrayList* myPlayerList = myPlayer->getPlayerPos();
     objPosArrayList* foodBucket = myFood->getFoodBucket();
 
@@ -124,7 +101,6 @@ void DrawScreen(void)
         for (int j = 0; j < myGM->getBoardSizeX(); j++) // columns
         {
             // print player
-            //print player in a loop 
             bool snakePrint = true;
             for (int k = 0; k<myPlayerList->getSize(); k++)
             {
@@ -142,13 +118,7 @@ void DrawScreen(void)
             
 
             // print food
-            // if (i == foodPos.y && j == foodPos.x)
-            // {
-            //     // gameBoard[i][j] = 'O';
-            //     MacUILib_printf("%c", foodPos.symbol);
-            // }
             bool foodPrint = true;
-            
             for (int k = 0; k < foodBucket->getSize(); k++)
             {
                 foodBucket->getElement(bodyPos, k);
@@ -166,30 +136,21 @@ void DrawScreen(void)
             
             if (i == 0 || i == myGM->getBoardSizeY() - 1 ||j == 0 || j == myGM->getBoardSizeX() - 1)
             {
-                // boardPos.setObjPos(j,i,'#');
                 MacUILib_printf("%c", '#');
 
             }
             else
             {
-                // boardPos.setObjPos(j,i,' ');;
                 MacUILib_printf("%c", ' ');
             }
-            // MacUILib_printf("%c", gameBoard[i][j]);
 
         }
         MacUILib_printf("\n");
     }
 
     MacUILib_printf("Player Score: %d\n", myGM->getScore());
-    MacUILib_printf("Snake Length %d\n", myPlayerList->getSize());
+    MacUILib_printf("Snake Length: %d\n", myPlayerList->getSize());
     MacUILib_printf("Press spacebar to exit the game!\n");
-
-    // debugging -- REMOVE
-    // MacUILib_printf("Food Coordinates: (%d, %d)\n", foodPos.x, foodPos.y);
-    // MacUILib_printf("Food Symbol: %c\n", foodPos.symbol);
-    // MacUILib_printf("collision: %d\n", myPlayer->checkFoodConsumption(headPos, foodBucket ));
-
 }
 
 void LoopDelay(void)
@@ -214,5 +175,4 @@ void CleanUp(void)
         MacUILib_uninit();
     }
   
-    
 }

@@ -1,8 +1,9 @@
 #ifndef FOOD_H
 #define FOOD_H
-
-#include <cstdlib> //provides srand() and rand()
-#include <time.h> //provides time
+// provides srand() and rand()
+#include <cstdlib> 
+// provides time
+#include <time.h> 
 
 #include "objPos.h"
 #include "objPosArrayList.h"
@@ -10,17 +11,14 @@
 
 using namespace std;
 
-
 class Food
 {
     private:
         objPos foodPos; 
         GameMechs* mainGameMechsRef;
-
-        int **myFood; //heap data members
-
-
-        // bonus 
+        //heap data members
+        int **myFood; 
+        // bonus
         objPosArrayList* foodBucket;
 
 
@@ -30,15 +28,8 @@ class Food
 
         void generateFood(objPos blockOff);
         void getFoodPos(objPos &returnPos);
-        // void updateFood();
-
         // bonus
         objPosArrayList *getFoodBucket();
-      
-
-
-
-    
 };
 
 

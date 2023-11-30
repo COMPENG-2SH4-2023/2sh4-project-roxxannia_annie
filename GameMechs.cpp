@@ -28,15 +28,6 @@ GameMechs::GameMechs(int boardX, int boardY)
     boardSizeY = boardY;
 }
 
-// do you need a destructor?
-// did not use heap?
-// will use when we do food
-// GameMechs::~GameMechs()
-// {
-
-// }
-
-
 bool GameMechs::getExitFlagStatus()
 {
     return exitFlag;
@@ -51,10 +42,7 @@ char GameMechs::getInput()
 {
     if (MacUILib_hasChar())
     {
-
         input = MacUILib_getChar();
-        // maybe dont need this line?
-        
     }
     return input;
 }
@@ -93,11 +81,6 @@ void GameMechs::clearInput()
 {
     input = 0;
 }
-
-// void GameMechs::incrementScore()
-// {
-//     score++;
-// }
 
 // bonus
 void GameMechs::incrementScore(int points)
