@@ -64,12 +64,29 @@ void Food::generateFood(objPosArrayList* playerPos)
                 }
                   
             }
+
+            if (k > 1)
+            {
+                objPos prevPos;
+                for (int i =0; i<=k-2;i++)
+                {
+                    foodBucket->getElement(prevPos,i);
+                    if (xPos == prevPos.x && yPos == prevPos.y)
+                    {
+                        flag = 1;
+                        break;
+                    }
+                }
+                
+            }
         
             if (flag !=1)
             {
                 objPos foodItem{xPos, yPos, '$'};
+
                 foodBucket->insertHead(foodItem); 
                 k++;
+                
             }
         }    
 
@@ -104,6 +121,21 @@ void Food::generateFood(objPosArrayList* playerPos)
                 }
                   
             }
+
+            if (k > 1)
+            {
+                objPos prevPos;
+                for (int i =0; i<=k-2; i++)
+                {
+                    foodBucket->getElement(prevPos,i);
+                    if (xPos == prevPos.x && yPos == prevPos.y)
+                    {
+                        flag = 1;
+                        break;
+                    }
+                }
+                
+            }
         
             if (flag !=1)
             {
@@ -135,7 +167,7 @@ void Food::generateFood(objPosArrayList* playerPos)
     // }
     
     
-    if (foodBucket->getSize() - 5 >0)
+    if (foodBucket->getSize()>5)
     {
         for (int i = 0; i < 5; i++)
             foodBucket->removeTail();
