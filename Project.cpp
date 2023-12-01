@@ -58,7 +58,7 @@ void Initialize(void)
     objPos playPos;
     objPos foodPos;
     myPlayer->getPlayerPos();
-    myFood->generateFood(playPos);
+    myFood->generateFood(myPlayer->getPlayerPos());
 
 }
 

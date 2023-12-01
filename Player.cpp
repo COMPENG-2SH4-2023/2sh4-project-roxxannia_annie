@@ -189,14 +189,27 @@ void Player::movePlayer(Food* foodRef)
     {
         playerPosList->insertHead(newPos);
         mainGameMechsRef->incrementScore(1);
-        foodRef->generateFood(newPos);
+        foodRef->generateFood(playerPosList); 
+        // for(int i = 0; i<playerPosList->getSize(); i++)
+        // {
+        //     objPos tempPos;
+        //     playerPosList->getElement(tempPos, i);
+        //     foodRef->generateFood(tempPos);  
+        // }
+        
     }
     else if (checkFoodConsumption(newPos,foodBucket) == 5)
     {
         playerPosList->insertHead(newPos);
         playerPosList->removeTail();
         mainGameMechsRef->incrementScore(5);
-        foodRef->generateFood(newPos);
+        // for(int i = 0; i<playerPosList->getSize(); i++)
+        // {
+        //     objPos tempPos;
+        //     playerPosList->getElement(tempPos, i);
+        //     foodRef->generateFood(tempPos);  
+        // }
+        foodRef->generateFood(playerPosList); 
     }
     else
     {
