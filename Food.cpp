@@ -65,7 +65,7 @@ void Food::generateFood(objPosArrayList* playerPos)
                   
             }
 
-            if (k > 1)
+            if (k >0)
             {
                 objPos prevPos;
                 for (int i =0; i<=k-2;i++)
@@ -122,7 +122,7 @@ void Food::generateFood(objPosArrayList* playerPos)
                   
             }
 
-            if (k > 1)
+            if (k >0)
             {
                 objPos prevPos;
                 for (int i =0; i<=k-2; i++)
@@ -167,7 +167,7 @@ void Food::generateFood(objPosArrayList* playerPos)
     // }
     
     
-    if (foodBucket->getSize()>5)
+    if (foodBucket->getSize() - 5 >0)
     {
         for (int i = 0; i < 5; i++)
             foodBucket->removeTail();
