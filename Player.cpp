@@ -179,6 +179,7 @@ void Player::movePlayer(Food* foodRef)
     // position updated based on its movement direction
     objPos newPos{newX,newY,'*'};
     
+    //checking sellf collision event
     if (checkSelfCollision())
     {
         mainGameMechsRef->setLoseFlag();
@@ -187,28 +188,16 @@ void Player::movePlayer(Food* foodRef)
 
     if (checkFoodConsumption(newPos,foodBucket) == 1)
     {
-        playerPosList->insertHead(newPos);
+        playerPosList->insertHead(newPos); //player length increase by 1
         mainGameMechsRef->incrementScore(1);
         foodRef->generateFood(playerPosList);  // to ensure generation not on snake body --> newPos --> playerPosList
-        // for(int i = 0; i<playerPosList->getSize(); i++)
-        // {
-        //     objPos tempPos;
-        //     playerPosList->getElement(tempPos, i);
-        //     foodRef->generateFood(tempPos);  
-        // }
-        
+
     }
     else if (checkFoodConsumption(newPos,foodBucket) == 5)
     {
         playerPosList->insertHead(newPos);
-        playerPosList->removeTail();
+        playerPosList->removeTail(); //no player length increment
         mainGameMechsRef->incrementScore(5);
-        // for(int i = 0; i<playerPosList->getSize(); i++)
-        // {
-        //     objPos tempPos;
-        //     playerPosList->getElement(tempPos, i);
-        //     foodRef->generateFood(tempPos);  
-        // }
         foodRef->generateFood(playerPosList);  // to ensure generation not on snake body --> newPos --> playerPosList
     }
     else

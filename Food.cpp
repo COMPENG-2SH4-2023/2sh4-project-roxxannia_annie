@@ -22,6 +22,7 @@ Food::~Food()
     delete foodBucket;
 }
 
+//Passing by reference using playerPos
 void Food::generateFood(objPosArrayList* playerPos)
 {
     srand(time(NULL));
@@ -32,14 +33,18 @@ void Food::generateFood(objPosArrayList* playerPos)
 
     while (k < 5)
     {
+        //Identify boarder size
         int x = mainGameMechsRef->getBoardSizeX();
         int y = mainGameMechsRef->getBoardSizeY();
 
+        //randomly generating x,y coordinates of the new food item
         xPos = (rand() % (x - 2)) + 1;
         yPos = (rand() % (y - 2)) + 1;
 
+        //checking if new location collides with player position
         bool collidesWithPlayer = false;
 
+        //loop to check if the food item is coincided with any Player body position
         for (int i = 0; i < playerPos->getSize(); i++)
         {
             objPos tempPos;
@@ -53,17 +58,19 @@ void Food::generateFood(objPosArrayList* playerPos)
 
         if (!collidesWithPlayer) 
         {
-        char symbol;
-        if (k < 2) {
-            symbol = '$';
-        } else {
-            symbol = 'o';
-        }
+            char symbol;
+            //first two items will be special food, else, be normal food
+            if (k < 2) {
+                symbol = '$';
+            } else {
+                symbol = 'o';
+            }
 
-        objPos foodItem{xPos, yPos, symbol};
-        foodBucket->insertHead(foodItem);
-        k++;
-    }
+            objPos foodItem{xPos, yPos, symbol};
+            //insert new food, move onto the next iteration
+            foodBucket->insertHead(foodItem);
+            k++;
+        }
 
     }
 

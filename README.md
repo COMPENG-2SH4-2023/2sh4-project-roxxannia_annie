@@ -10,3 +10,5 @@ Section: L05 L01
 MacID: phana11 wangs302
 
 StudentID: 400380760 [roxxannia student #]
+
+The game "sometimes" glitches due to the c/c++ file searching when running in vscode (it's not an actual glitch because it actually continues on)

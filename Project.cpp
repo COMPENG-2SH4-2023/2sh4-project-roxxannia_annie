@@ -15,7 +15,7 @@ using namespace std;
 GameMechs* myGM;
 Player* myPlayer;
 Food* myFood;
-objPosArrayList* playerPosition;
+// objPosArrayList* playerPosition;
 
 void Initialize(void);
 void GetInput(void);
@@ -55,9 +55,9 @@ void Initialize(void)
     // food generation
     myFood = new Food(myGM);
 
-    objPos playPos;
-    objPos foodPos;
-    myPlayer->getPlayerPos();
+    // objPos playPos;
+    // objPos foodPos;
+    // myPlayer->getPlayerPos();
     //bonus fixing
     // myFood->generateFood(playPos);
     myFood->generateFood(myPlayer->getPlayerPos());
@@ -72,8 +72,9 @@ void GetInput(void)
 void RunLogic(void)
 {   
     // temp variable to store food position
-    objPos tempFood;
-    myFood->getFoodPos(tempFood);
+    // previous iteration
+    // objPos tempFood;
+    // myFood->getFoodPos(tempFood);
 
     // update players dir and move player
     myPlayer->updatePlayerDir();
@@ -135,7 +136,7 @@ void DrawScreen(void)
             if (!foodPrint)
                 continue;
 
-            
+            // print boarder
             if (i == 0 || i == myGM->getBoardSizeY() - 1 ||j == 0 || j == myGM->getBoardSizeX() - 1)
             {
                 MacUILib_printf("%c", '#');
@@ -164,13 +165,14 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     
-
+    // if player self collided
     if(myGM->getLoseFlagStatus() == true)
     {
         MacUILib_clearScreen(); 
         MacUILib_printf("You have consumed yourself :( it's a suicide");
         MacUILib_uninit();
     }
+    // if player ends game voluntarily
     else if (myGM->getLoseFlagStatus() == false)
     {
         MacUILib_printf("Your final score is %d", myGM->getScore());

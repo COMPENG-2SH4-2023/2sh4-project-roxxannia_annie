@@ -19,7 +19,6 @@ class Food
 
         int **myFood; //heap data members
 
-
         // bonus 
         objPosArrayList* foodBucket;
 
