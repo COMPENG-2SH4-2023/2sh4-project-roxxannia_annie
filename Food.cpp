@@ -28,151 +28,53 @@ void Food::generateFood(objPosArrayList* playerPos)
 
     int xPos;
     int yPos;
-    char symbol;
     int k = 0;
-    int flag =0;
 
-    // bonus - create special $ food item and insert it into bucket
-    while(k<5)
+    while (k < 5)
     {
-        if(k<2)
+        int x = mainGameMechsRef->getBoardSizeX();
+        int y = mainGameMechsRef->getBoardSizeY();
+
+        xPos = (rand() % (x - 2)) + 1;
+        yPos = (rand() % (y - 2)) + 1;
+
+        bool collidesWithPlayer = false;
+
+        for (int i = 0; i < playerPos->getSize(); i++)
         {
-            int x = mainGameMechsRef->getBoardSizeX();
-            int y = mainGameMechsRef->getBoardSizeY();
-
-            xPos = (rand() % (x - 2)) + 1;
-            yPos = (rand() % (y - 2)) + 1;
-
-            // for (int i = 0; i < 2; i++)
-            // {
-            //     // check if the position is the same as the blockOff
-            //      if (xPos == blockOff.x && yPos == blockOff.y)
-            //     {
-            //         flag = 1;
-            //         break;
-            //     }
-            // }
-
-            for(int i = 0; i<playerPos->getSize(); i++)
+            objPos tempPos;
+            playerPos->getElement(tempPos, i);
+            if (xPos == tempPos.x && yPos == tempPos.y)
             {
-                objPos tempPos;
-                playerPos->getElement(tempPos, i);
-                if (xPos == tempPos.x && yPos == tempPos.y)
-                {
-                    flag = 1;
-                    break;
-                }
-                  
+                collidesWithPlayer = true;
+                break;
             }
+        }
 
-            if (k >0)
-            {
-                objPos prevPos;
-                for (int i =0; i<=k-2;i++)
-                {
-                    foodBucket->getElement(prevPos,i);
-                    if (xPos == prevPos.x && yPos == prevPos.y)
-                    {
-                        flag = 1;
-                        break;
-                    }
-                }
-                
-            }
-        
-            if (flag !=1)
-            {
-                objPos foodItem{xPos, yPos, '$'};
-
-                foodBucket->insertHead(foodItem); 
-                k++;
-                
-            }
-        }    
-
-
-        else
+        if (!collidesWithPlayer) 
         {
+        char symbol;
+        if (k < 2) {
+            symbol = '$';
+        } else {
+            symbol = 'o';
+        }
 
-            int x = mainGameMechsRef->getBoardSizeX();
-            int y = mainGameMechsRef->getBoardSizeY();
-
-            xPos = (rand() % (x - 2)) + 1;
-            yPos = (rand() % (y - 2)) + 1;
-
-            // for (int i = 0; i < 2; i++)
-            // {
-            //     // check if the position is the same as the blockOff
-            //      if (xPos == blockOff.x && yPos == blockOff.y)
-            //     {
-            //         flag = 1;
-            //         break;
-            //     }
-            // }
-
-            for(int i = 0; i<playerPos->getSize(); i++)
-            {
-                objPos tempPos;
-                playerPos->getElement(tempPos, i);
-                if (xPos == tempPos.x && yPos == tempPos.y)
-                {
-                    flag = 1;
-                    break;
-                }
-                  
-            }
-
-            if (k >0)
-            {
-                objPos prevPos;
-                for (int i =0; i<=k-2; i++)
-                {
-                    foodBucket->getElement(prevPos,i);
-                    if (xPos == prevPos.x && yPos == prevPos.y)
-                    {
-                        flag = 1;
-                        break;
-                    }
-                }
-                
-            }
-        
-            if (flag !=1)
-            {
-                objPos foodItem{xPos, yPos, 'o'};
-                foodBucket->insertHead(foodItem); 
-                k++;
-            }
-        } 
+        objPos foodItem{xPos, yPos, symbol};
+        foodBucket->insertHead(foodItem);
+        k++;
     }
-            
-    // generating normal food items
-    //     for (int i = 2; i < 5; i++)
-    //     {
-    //         int x = mainGameMechsRef->getBoardSizeX();
-    //         int y = mainGameMechsRef->getBoardSizeY();
 
-    //         xPos = (rand() % (x - 2)) + 1;
-    //         yPos = (rand() % (y - 2)) + 1;
+    }
 
-    //         // Check if the position is the same as the blockOff
-    //         if (xPos == blockOff.x && yPos == blockOff.y)
-    //         {
-    //             continue;
-    //         }
-
-    //         objPos foodItem{xPos, yPos, 'o'};
-    //         foodBucket->insertHead(foodItem);
-    //     }
-    // }
-    
-    
-    if (foodBucket->getSize() - 5 >0)
+    // remove excess items from the bucket
+    while (foodBucket->getSize() > 5)
     {
-        for (int i = 0; i < 5; i++)
-            foodBucket->removeTail();
+        foodBucket->removeTail();
     }
 }
+
+
     
 
 void Food::getFoodPos(objPos &returnPos)

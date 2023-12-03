@@ -69,7 +69,7 @@ bool Player::checkSelfCollision()
     for (int i = 1; i<playerPosList->getSize(); i++)
     {
         playerPosList->getElement(colliPos,i);
-        if(headPos.x == colliPos.x && headPos.y == colliPos.y)
+        if (headPos.x == colliPos.x && headPos.y == colliPos.y)
         {
             return true;
             
@@ -189,7 +189,7 @@ void Player::movePlayer(Food* foodRef)
     {
         playerPosList->insertHead(newPos);
         mainGameMechsRef->incrementScore(1);
-        foodRef->generateFood(playerPosList); 
+        foodRef->generateFood(playerPosList);  // to ensure generation not on snake body --> newPos --> playerPosList
         // for(int i = 0; i<playerPosList->getSize(); i++)
         // {
         //     objPos tempPos;
@@ -209,7 +209,7 @@ void Player::movePlayer(Food* foodRef)
         //     playerPosList->getElement(tempPos, i);
         //     foodRef->generateFood(tempPos);  
         // }
-        foodRef->generateFood(playerPosList); 
+        foodRef->generateFood(playerPosList);  // to ensure generation not on snake body --> newPos --> playerPosList
     }
     else
     {

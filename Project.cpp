@@ -58,6 +58,8 @@ void Initialize(void)
     objPos playPos;
     objPos foodPos;
     myPlayer->getPlayerPos();
+    //bonus fixing
+    // myFood->generateFood(playPos);
     myFood->generateFood(myPlayer->getPlayerPos());
 
 }
@@ -102,7 +104,7 @@ void DrawScreen(void)
         {
             // print player
             bool snakePrint = true;
-            for (int k = 0; k<myPlayerList->getSize(); k++)
+            for (int k = 0; k < myPlayerList->getSize(); k++)
             {
                 myPlayerList->getElement(bodyPos,k);
                 if (bodyPos.y == i && bodyPos.x == j)
